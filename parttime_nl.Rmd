@@ -22,20 +22,22 @@ library(sf)
 ## 1.1 Describe the Social Problem
 
 The Netherlands has the highest rate of part-time work in Europe. Roughly 39% of Dutch
-workers have a part-time job (OECD, 2024), while at the same time the country has one of
-the highest overall employment rates in the EU. So the Dutch labour market is not a small
-group working long hours, but a large group working fewer hours.
+workers have a part-time job (OECD, 2024). At the same time, the country has one of the
+highest overall employment rates in the EU. This means the Dutch labour market is not about
+a group of people working long hours, but rather a large group of people working fewer
+hours.
 
-Part-time work in the Netherlands is strongly linked to gender. About three in four
-working women have a part-time job, compared to roughly one in five working men
-(Portegijs & van den Brakel, 2016). Because of this, debates about part-time work in the
-Netherlands are usually also debates about women, labour market participation and
-economic independence.
+Part-time work in the Netherlands is strongly connected to gender. About three out of four
+working women have a part-time job, compared to roughly one out of five working men
+(Portegijs & van den Brakel, 2016). This causes debates about part-time work in the
+Netherlands to include debates about women, labour market participation and economic
+independence.
 
-The Netherlands is also an outlier within Europe. In 2024 Dutch workers aged 20 to 64
-worked on average 32.1 hours per week, against an EU average of 36.0 hours (Eurostat,
-2025). With current labour shortages this matters for policymakers: if a large share of
-the workforce works part-time, there is in principle room to increase hours worked.
+The Netherlands is very different from other European countries. In 2024, Dutch workers
+between the age of 20 and 64 worked an average of 32.1 hours per week, against an EU average
+of 36.0 hours per week (Eurostat, 2025). With current labour shortages, this is relevant
+for policymakers; if a large share of the workforce works part-time, it might be possible to
+increase hours worked.
 
 ## 1.2 Research Question and Sub-Questions
 
@@ -58,8 +60,8 @@ Sub-questions:
 We use data from Eurostat, the statistical office of the European Union. The main dataset
 is part-time employment as a percentage of total employment, by sex and age (Eurostat code
 lfsa_eppga). It contains, per country and per year, the share of employed people who work
-part-time, split by sex and age group. We download it directly into R with the eurostat
-package, so the whole analysis can be reproduced by anyone who runs this file.
+part-time. We download it directly into R with the eurostat package, giving anyone who runs
+this file the ability to reproduce the analysis.
 
 ```{r load-data, results = "hide"}
 pt_raw <- get_eurostat("lfsa_eppga", time_format = "num")
@@ -68,18 +70,18 @@ pt_raw <- rename(pt_raw, year = TIME_PERIOD)
 
 ## 2.2 Data Sources and Limitations
 
-The data come from the EU Labour Force Survey, a large household survey carried out in all
-EU member states. A few limitations matter for our analysis. First, it is survey data, so
-the numbers are estimates with a margin of error. Second, the definition of part-time work
-is not the same everywhere: most countries rely on what respondents say themselves, but the
-Netherlands uses a 35-hour threshold, which makes the Dutch figures relatively high
-compared to sources that use a 30-hour rule such as the OECD. Third, in 2021 a new EU
-regulation changed the survey methodology, which causes a break in the time series (we come
-back to this in the event analysis).
+The data come from the EU Labour Force Survey, a large household survey done in all EU
+member states. There are some limitations to our analysis. First, the data is from a survey,
+so the numbers are estimates with a margin of error. Second, the definition of part-time
+work varies across countries; most countries rely on what respondents say themselves, but
+the Netherlands uses a 35-hour limit, which results in the Dutch figures being relatively
+high compared to sources that use a 30-hour rule such as the OECD. Third, in 2021, a new EU
+regulation was introduced which changed the survey methodology, causing a break in the time
+series (we come back to this in the event analysis).
 
 To combine more than one source, we add a second table that groups each country into a
-European region. This lets us compare the Netherlands not only to single countries but to
-whole regions.
+European region. This allows us to compare the Netherlands to whole regions instead of just
+countries.
 
 ```{r region-table}
 regions <- tribble(
@@ -111,10 +113,10 @@ regions <- tribble(
 
 We clean the raw data in a few clear steps:
 
-1. Keep only the working-age group (15--64) and the percentage unit.
-2. Drop rows where the part-time rate is missing, because that is our outcome.
-3. Keep only the columns we need and give them readable names.
-4. Merge in the region table from Section 2.2.
+1. We only keep the working-age group (15--64) and the percentage unit.
+2. We drop rows where the part-time rate is missing, because that is our outcome.
+3. We keep only the columns we need and give them readable names.
+4. We merge in the region table from Section 2.2.
 
 ```{r clean-data}
 pt_clean <- pt_raw %>%
@@ -126,16 +128,16 @@ pt_clean <- pt_raw %>%
 
 ## 3.2 Creation of New Variables
 
-We build two new variables that we use in the plots below.
+We made two new variables that we will use in the plots below.
 
 **Gender gap.** For every country and year we compute the difference between the female and
-male part-time rate. A positive number means women work part-time more often than men. We
-also compute a ratio (female rate divided by male rate): a ratio of 3 means women work
-part-time three times as often as men. We use the gap in Section 3.4.
+male part-time rate. If a number is positive, it means women work part-time more often than
+men. We also compute a ratio (female rate divided by male rate). For example, a ratio of 3
+means women work part-time three times as often as men. We use the gap in Section 3.4.
 
 **Change around 2021.** For each country we compare the average part-time rate just before
-the break (2018--2020) with the average just after (2021--2023). This measures the size of
-the jump around 2021, which we use in Section 3.6.
+(2018--2020) and just after (2021--2023) the break with each other. This shows us how big
+the change was around 2021, which we use in Section 3.6.
 
 ```{r new-variables}
 gap <- pt_clean %>%
@@ -168,11 +170,11 @@ pt_clean %>%
   theme_minimal()
 ```
 
-The chart shows that part-time employment in the Netherlands rose steadily from about 21%
-of total employment in 1983 to roughly 50% by the early 2010s. From then until 2020 the
-rate stayed close to 50%, peaking at about 51% in 2020. In 2021 it drops sharply to around
-43% and stays roughly flat in the years after. This break should be read with care: the EU
-Labour Force Survey changed its methodology in 2021, so the 2021 fall is largely a
+The chart shows that part-time employment in the Netherlands rose fairly constant from about
+21% of total employment in 1983 to roughly 50% by the early 2010s. From then until 2020 the
+rate remained quite stable, peaking at about 51% in 2020. In 2021 it drops sharply to around
+43% and almost stays the same in the years after. This break should be read with care; the
+EU Labour Force Survey changed its methodology in 2021, so the 2021 fall could indicate a
 measurement effect rather than a real decline in part-time work.
 
 ## 3.4 Gender Differences in Part-Time Employment
@@ -200,15 +202,15 @@ gap %>%
   theme_minimal()
 ```
 
-Across the whole period women work part-time far more often than men. The female rate
-climbs from about 50% in 1983 to a peak of roughly 76% in the mid-2010s, while the male
-rate rises much more slowly, from under 10% to about 28% by 2020. The gap is therefore
-large and persistent: in 2024 around 63% of women work part-time against about 24% of men,
-a difference of roughly 40 percentage points (women work part-time about 2.6 times as often
-as men). Both lines fall in 2021, in line with the methodological break discussed below,
-but the gender gap stays wide throughout. This pattern is central to the social problem:
-part-time work in the Netherlands is overwhelmingly a female phenomenon, which ties directly
-to debates about women's labour-market participation and economic independence.
+Across the whole period women work part-time far more often than men. The female rate climbs
+from about 50% in 1983 to a peak of roughly 76% in the mid-2010s, while the male rate rises
+from under 10% to about 28% by 2020. The gap is therefore large and persistent: in 2024
+around 63% of women work part-time against about 24% of men, a difference of roughly 40
+percentage points (women work part-time about 2.6 times as often as men). Both lines fall in
+2021, in line with the methodological break discussed below, but the gender gap stays wide
+throughout. This pattern reflects the social problem: part-time work in the Netherlands is
+mostly done by women, which relates directly to discussions about women's participation in
+the labour-market and economic independence.
 
 ## 3.5 Spatial Variation Across Europe
 
@@ -230,14 +232,14 @@ ggplot(map_df) +
 ```
 
 The map shows that the Netherlands has the highest part-time employment rate across Europe.
-Other countries in north-western Europe also have a high part-time employment rate, while
-the countries in south-eastern Europe have a low part-time employment rate.
+Other countries in Northwestern Europe also have a high part-time employment rate, while the
+countries in Southeastern Europe have a low part-time employment rate.
 
 ## 3.6 Event Analysis
 
-Instead of looking at the Netherlands on its own again, we compare it with a few
-neighbouring countries around 2020--2021, and we use our change variable to measure the size
-of the jump in each country.
+Instead of just looking at the Netherlands, we compare it with a few neighbouring countries
+around 2020--2021, and we use our change variable to measure the size of the jump in each
+country.
 
 ```{r plot-event}
 pt_clean %>%
@@ -269,11 +271,11 @@ change %>%
 
 Around 2021 the Dutch line drops sharply, from about 50% to roughly 43%, while Germany,
 France and Belgium barely move. Because COVID-19 affected all four countries, the fact that
-only the Netherlands shows a jump makes COVID an unlikely explanation: a real pandemic
-effect would be expected to appear in the neighbouring countries too. The drop instead lines
-up exactly with the 2021 EU-LFS methodological change, which reclassified many Dutch workers
-because of the country's 35-hour part-time definition. We therefore read the 2021 movement
-as an association with a measurement change, not as evidence that COVID caused a real fall in
+only the Netherlands shows a jump makes COVID an unlikely explanation; a real pandemic
+effect would be expected to appear in the neighbouring countries too. The drop lines up
+exactly with the 2021 EU-LFS methodological change, which reclassified many Dutch workers
+because of the country's 35-hour part-time definition. We interpret the 2021 movement as an
+association with a measurement change, not as evidence that COVID caused a real fall in
 part-time work.
 
 # 4. Discussion
@@ -282,23 +284,23 @@ part-time work.
 
 Part-time employment in the Netherlands rose from about 21% of total employment in 1983 to
 roughly 50% by the early 2010s and then stayed broadly stable until 2020. It is strongly
-gendered: in 2024 around 63% of women work part-time against about 24% of men. Across Europe
-the Netherlands has the highest rate, with north-western Europe also high and south-eastern
-Europe low. The sharp 2021 drop does not appear in Germany, France or Belgium, so it
-reflects the 2021 EU-LFS methodological change rather than COVID-19.
+gendered; in 2024 around 63% of women work part-time against about 24% of men. Across Europe
+the Netherlands has the highest rate, with Northwestern Europe also high and Southeastern
+Europe low. The sharp drop in 2021 does not appear in Germany, France or Belgium, so it's
+most likely that it reflects the 2021 EU-LFS methodological change rather than COVID-19.
 
 ## 4.2 Limitations
 
 The data are survey estimates, the definition of part-time work differs between countries
-(the Netherlands uses a 35-hour threshold), and the 2021 methodological break makes it hard
-to compare years before and after 2021. Our event analysis therefore shows correlation, not
+(the Netherlands uses a 35-hour limit), and the 2021 methodological break makes it hard to
+compare years before and after 2021. Our event analysis therefore shows correlation, not
 causation. The region table is a simplification of European geography.
 
 ## 4.3 Implications
 
-For policy, a large and overwhelmingly female part-time workforce means there is room to
-raise hours worked amid labour shortages, though this is shaped by childcare, taxation and
-norms, and our findings show association, not causation.
+From a policy perspective, a large and overwhelmingly female part-time workforce means there
+is room to raise hours worked amid labour shortages. However, this is shaped by childcare,
+taxation and norms, and our findings show association, not causation.
 
 # 5. Reproducibility
 
@@ -307,8 +309,6 @@ norms, and our findings show association, not causation.
 All code for this report is available in our public GitHub repository:
 
 https://github.com/HIddehendrickx/Programming-for-Economist-
-
-
 
 ## 5.2 How to Reproduce the Analysis
 
